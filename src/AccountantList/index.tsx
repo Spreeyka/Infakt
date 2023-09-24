@@ -1,63 +1,40 @@
 import React from 'react';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+
+import { CircularProgress } from '@mui/material';
 import { Card } from '../Card';
-
-export type AccountantType = {
-  cell: string;
-  name: {
-    first: string;
-    last: string;
-  };
-  email: string;
-  picture: { thumbnail: string; medium: string };
-  login: {
-    uuid: string;
-  };
-};
-
-type AccountantResponseType = {
-  results: AccountantType[];
-  info: {
-    page: number;
-  };
-};
-
-const fetchRandomUsers = async (page: number): Promise<AccountantResponseType> => {
-  const response = await axios.get(`https://randomuser.me/api/?seed=abc&gender=female&page=${page}&results=4`);
-  return response.data;
-};
-
-export function useRandomUsers(page: number) {
-  return useQuery(['randomUsers', page], () => fetchRandomUsers(page), {
-    staleTime: 60000,
-  });
-}
+import { useRandomUsers } from '../hooks/useInfiniteFetch';
+import { ContainedButton, FlexCenteredWrapper, StyledList } from './styles';
+import { AccountantType } from './types';
 
 const AccountantList = () => {
-  const { data, isLoading, isError, error } = useRandomUsers(1);
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useRandomUsers();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (status === 'loading') {
+    return (
+      <FlexCenteredWrapper>
+        <CircularProgress />
+      </FlexCenteredWrapper>
+    );
   }
 
-  if (isError) {
-    return <div>Error: {(error as Error).message}</div>;
+  if (status === 'error') {
+    return <FlexCenteredWrapper>Wystąpił błąd: {(error as Error).message}</FlexCenteredWrapper>;
   }
 
   return (
     <>
-      <div
-        style={{ display: 'flex', gap: '24px', marginTop: '48px', flexWrap: 'wrap', justifyContent: 'space-between' }}
-      >
-        {data &&
-          data.results &&
-          data.results.map((accountant, index) => (
-            <div key={index}>
-              <Card accountant={accountant}></Card>
-            </div>
+      {data?.pages.map((page, pageIndex) => (
+        <StyledList key={pageIndex}>
+          {page.results.map((accountant: AccountantType) => (
+            <Card accountant={accountant} key={accountant.email}></Card>
           ))}
-      </div>
+        </StyledList>
+      ))}
+      <FlexCenteredWrapper>
+        <ContainedButton onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
+          {isFetchingNextPage ? 'Wczytywanie' : 'Wczytaj więcej'}
+        </ContainedButton>
+      </FlexCenteredWrapper>
     </>
   );
 };

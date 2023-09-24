@@ -11,10 +11,10 @@ import {
   StyledLabel,
   StyledLink,
 } from './styles';
+import { AccountantType } from '../AccountantList/types';
+import { Link } from 'react-router-dom';
 
-import { AccountantType } from '../AccountantList';
-
-export const Card = ({ accountant: { picture, name, email, cell } }: { accountant: AccountantType }) => {
+export const Card = ({ accountant: { picture, name, email, cell, gender } }: { accountant: AccountantType }) => {
   return (
     <>
       <StyledCard>
@@ -22,7 +22,7 @@ export const Card = ({ accountant: { picture, name, email, cell } }: { accountan
           <CardHeaderWrapper>
             <img src={picture.medium} alt='zdjęcie księgowego' width={64} height={64}></img>
             <div>
-              <CardHeaderTitle>Twoja księgowa</CardHeaderTitle>
+              <CardHeaderTitle>{gender === 'female' ? 'Twoja księgowa' : 'Twój księgowy'}</CardHeaderTitle>
               <CardHeaderDescription>
                 {name.first} {name.last}
               </CardHeaderDescription>
@@ -51,7 +51,9 @@ export const Card = ({ accountant: { picture, name, email, cell } }: { accountan
               </StyledDescription>
             </StyledLabel>
           </div>
-          <StyledButton>Dowiedz się więcej</StyledButton>
+          <Link to={`/ksiegowi/${email}`} state={{ picture, name, email, cell, gender }} tabIndex={-1}>
+            <StyledButton>Dowiedz się więcej</StyledButton>
+          </Link>
         </CardWrapper>
       </StyledCard>
     </>

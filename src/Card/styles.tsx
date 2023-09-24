@@ -15,7 +15,7 @@ export const StyledButton = styled(Button)(() => ({
 
   '&:hover': {
     background: 'rgba(227,242,253, 1)',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
   },
 }));
 
@@ -23,10 +23,6 @@ export const StyledCard = styled('div')(() => ({
   borderRadius: '16px',
   border: '1px solid rgba(228,230,232, 1)',
   boxShadow: '0px 1px 3px rgba(0,0,0, 0.12)',
-  opacity: '1',
-  backgroundColor: 'rgba(255,255,255, 1)',
-  width: 'max-content',
-  height: '376px',
   padding: '24px',
 }));
 

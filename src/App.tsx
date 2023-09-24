@@ -2,23 +2,36 @@ import React from 'react';
 import { Layout } from './Layout';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AccountantList } from './AccountantList';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AccountantDetails } from './AccountantDetails';
+
+// Deploy na netlify
 
 const queryClient = new QueryClient();
 
-// refactor
-// Przycisk pozwalający na załadowanie kolejnych kart z informacjami o księgowych
-// Instalacja React Router
-// Dodanie routingu
-// Kliknięcie w dowiedz się więcej robi przekierowanie
-// Wygląd strony po przekierowaniu
-// Deploy na netlify
+const router = createBrowserRouter([
+  {
+    path: '/',
+    Component() {
+      return (
+        <Layout>
+          <AccountantList />
+        </Layout>
+      );
+    },
+  },
+  {
+    path: '/ksiegowi/:id',
+    Component() {
+      return <AccountantDetails />;
+    },
+  },
+]);
 
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout>
-        <AccountantList />
-      </Layout>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 };
