@@ -1,37 +1,8 @@
 import React from 'react';
-import { Layout } from './Layout';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { AccountantList } from './AccountantList';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AccountantDetails } from './AccountantDetails';
+import { Providers } from './Providers';
 
-// Deploy na netlify
-
-const queryClient = new QueryClient();
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    Component() {
-      return (
-        <Layout>
-          <AccountantList />
-        </Layout>
-      );
-    },
-  },
-  {
-    path: '/ksiegowi/:id',
-    Component() {
-      return <AccountantDetails />;
-    },
-  },
-]);
+// Deploy na Vercel
 
 export const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+  return <Providers />;
 };

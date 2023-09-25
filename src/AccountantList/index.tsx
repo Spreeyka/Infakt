@@ -2,12 +2,12 @@ import React from 'react';
 
 import { CircularProgress } from '@mui/material';
 import { Card } from '../Card';
-import { useRandomUsers } from '../hooks/useInfiniteFetch';
+import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
 import { ContainedButton, FlexCenteredWrapper, StyledList } from './styles';
 import { AccountantType } from './types';
 
 const AccountantList = () => {
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useRandomUsers();
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteFetch();
 
   if (status === 'loading') {
     return (
